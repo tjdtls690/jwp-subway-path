@@ -70,11 +70,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             final HttpStatus status,
             final WebRequest request
     ) {
-        String message = "[ERROR] 서버가 응답할 수 없습니다.";
         if (ex instanceof IllegalArgumentException) {
-            message = "[ERROR] " + ex.getMessage();
+            logger.error("[ERROR] " + ex.getMessage());
+            return ResponseEntity.badRequest().body(new ExceptionResponse("[ERROR] " + ex.getMessage()));
         }
-        logger.error(message);
-        return ResponseEntity.badRequest().body(new ExceptionResponse(message));
+        
+        logger.error("[ERROR] 서버가 응답할 수 없습니다.");
+        return ResponseEntity.internalServerError().body(new ExceptionResponse("[ERROR] 서버가 응답할 수 없습니다."));
     }
 }
