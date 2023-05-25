@@ -13,13 +13,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ShortestPathFinder {
-    private static final int BASE_FEE = 1250;
-    private static final int BASE_DISTANCE = 10;
-    private static final int RANGE_OF_FIVE_INCREASE = 40;
-    private static final int START_DISTANCE_OF_EIGHT_INCREASE = BASE_DISTANCE + RANGE_OF_FIVE_INCREASE;
-    private static final int FIVE_INCREASE = 5;
-    private static final int EIGHT_INCREASE = 8;
-    
     private final Set<Line> lines;
     
     public ShortestPathFinder(final Set<Line> lines) {
@@ -40,7 +33,10 @@ public class ShortestPathFinder {
         
         final List<String> shortestPath = getShortestPath(graphPath, startStationName, endStationName);
         final Long shortestDistance = (long) graphPath.getWeight();
-        final Long fee = ageGroupFeeCalculator.calculateFee(calculateFee(shortestDistance) + getExtraCharge(graphPath));
+        final Long fee = ageGroupFeeCalculator.calculateFee(
+                ShortestPathCalculator.calculateFee(shortestDistance)
+                        + getExtraCharge(graphPath)
+        );
         return new ShortestPathResult(shortestPath, shortestDistance, fee);
     }
     
@@ -62,24 +58,6 @@ public class ShortestPathFinder {
         } catch (final NullPointerException ne) {
             throw new IllegalArgumentException(startStationName + "과 " + endStationName + "은 이어져있지 않습니다.");
         }
-    }
-    
-    private long calculateFee(final Long distance) {
-        return BASE_FEE
-                + calculateWithSpecifiedIncrement(Math.min(RANGE_OF_FIVE_INCREASE, distance - BASE_DISTANCE), FIVE_INCREASE)
-                + calculateWithSpecifiedIncrement(distance - START_DISTANCE_OF_EIGHT_INCREASE, EIGHT_INCREASE);
-    }
-    
-    private long calculateWithSpecifiedIncrement(final long distance, final int increase) {
-        if (isDistanceNegative(distance)) {
-            return 0;
-        }
-        
-        return (long) ((Math.ceil((distance - 1) / increase) + 1) * 100);
-    }
-    
-    private boolean isDistanceNegative(final long distance) {
-        return distance <= 0;
     }
     
     private long getExtraCharge(final GraphPath<Station, Section> graphPath) {
