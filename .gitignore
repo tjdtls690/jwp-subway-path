@@ -6,8 +6,7 @@ build/
 !**/src/test/**
 /frontend/node_modules/
 
-InitCon.java
-init.http
+./db
 
 ### STS ###
 .apt_generated
