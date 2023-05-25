@@ -34,7 +34,7 @@ public class ShortestPathFinder {
         final List<String> shortestPath = getShortestPath(graphPath, startStationName, endStationName);
         final Long shortestDistance = (long) graphPath.getWeight();
         final Long fee = ageGroupFeeCalculator.calculateFee(
-                ShortestPathCalculator.calculateFee(shortestDistance)
+                ShortestPathFeeCalculator.calculateFee(shortestDistance)
                         + getExtraCharge(graphPath)
         );
         return new ShortestPathResult(shortestPath, shortestDistance, fee);

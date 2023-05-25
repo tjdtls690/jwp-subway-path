@@ -1,6 +1,6 @@
 package subway.shortestpathfinder.domain;
 
-public final class ShortestPathCalculator {
+public final class ShortestPathFeeCalculator {
     private static final int BASE_FEE = 1250;
     private static final int BASE_DISTANCE = 10;
     private static final int RANGE_OF_FIVE_INCREASE = 40;
@@ -8,7 +8,7 @@ public final class ShortestPathCalculator {
     private static final int FIVE_INCREASE = 5;
     private static final int EIGHT_INCREASE = 8;
     
-    private ShortestPathCalculator() { }
+    private ShortestPathFeeCalculator() { }
     
     public static long calculateFee(final Long distance) {
         return BASE_FEE
